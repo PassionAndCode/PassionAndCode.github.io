@@ -1,16 +1,498 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Portafolio - PassionAndCode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PassionAndDev | Multi-Stack Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Orbitron:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+
     <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; background-color: #f4f4f4; }
-        h1 { color: #333; }
-        p { color: #666; }
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111;
+            --accent-color: #2563eb;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            transition: background-color 0.8s ease, color 0.8s ease;
+        }
+
+        .fixed-logo {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            transition: color 0.8s ease, background-color 0.8s ease, border-color 0.8s ease, text-shadow 0.8s ease;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .content-box {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        h2 { font-size: clamp(3rem, 10vw, 6rem); margin-bottom: 20px; }
+        p { font-size: 1.5rem; opacity: 0.8; line-height: 1.4; }
+
+        .section-programming {
+            background: radial-gradient(circle at top left, #ffffff, #e2e8f0);
+            position: relative;
+            overflow: hidden;
+            color: #111;
+        }
+
+        .section-programming::before {
+            content: "{ ; }";
+            position: absolute;
+            font-size: 20rem;
+            color: rgba(37, 99, 235, 0.03);
+            font-weight: 900;
+            top: -50px;
+            right: -50px;
+            pointer-events: none;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 25px;
+            margin-top: 60px;
+            perspective: 1000px;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            padding: 30px 15px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .skill-item i { font-size: 3.5rem; color: #444; transition: color 0.3s; }
+        .skill-item:hover { transform: translateY(-15px) rotateX(10deg); box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2); border-color: var(--accent-color); }
+        .skill-item:hover .devicon-java-plain { color: #f89820; }
+        .skill-item:hover .devicon-python-plain { color: #3776ab; }
+        .skill-item:hover .devicon-javascript-plain { color: #f7df1e; }
+        .skill-item:hover .devicon-nodejs-plain { color: #339933; }
+        .skill-item:hover .devicon-html5-plain { color: #e34f26; }
+        .skill-item:hover .devicon-css3-plain { color: #1572b6; }
+        .skill-item:hover .devicon-c-plain { color: #a8b9cc; }
+
+        .skill-item span { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; color: #666; }
+
+        .expert-badge {
+            background: #2563eb;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.6rem;
+            position: absolute;
+            top: -10px;
+        }
+
+        body.theme-security { background-color: #050505; color: #00ff41; }
+        body.theme-security .fixed-logo { font-family: 'Fira Code', monospace; color: #00ff41; }
+
+        #security-trigger { position: relative; }
+        #security-trigger::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .glitch-text { position: relative; color: #00ff41; font-family: 'Fira Code', monospace; font-weight: 700; }
+        
+        .hacker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .hacker-item {
+            border: 1px solid #00ff41;
+            background: rgba(0, 20, 0, 0.8);
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            text-align: left;
+            transition: all 0.3s;
+            cursor: crosshair;
+        }
+
+        .hacker-item:hover { background: #00ff41; color: #000; box-shadow: 0 0 20px #00ff41; }
+        .hacker-item h3 { font-size: 1rem; margin-bottom: 5px; text-transform: uppercase; }
+        .hacker-item p { font-size: 0.8rem; opacity: 0.7; margin: 0; }
+
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        body.theme-gaming { 
+            background: #0c051a; 
+            color: #fff; 
+        }
+
+        #gaming-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        body.theme-gaming #gaming-canvas { opacity: 1; }
+
+        body.theme-gaming .fixed-logo { 
+            font-family: 'Orbitron', sans-serif; 
+            color: #ff00cc; 
+            text-shadow: 0 0 10px rgba(255, 0, 204, 0.5);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 8px 25px;
+            border: 1px solid #ff00cc;
+        }
+
+        #gaming-trigger {
+            position: relative;
+            z-index: 1;
+        }
+
+        #gaming-trigger h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            color: #ff00cc;
+            text-shadow: 0 0 15px rgba(255, 0, 204, 0.7), 0 0 30px rgba(255, 0, 204, 0.4);
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        #gaming-trigger .subtitle-gaming {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #00ff41;
+            margin-bottom: 40px;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+        }
+
+        .game-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .game-skill-card {
+            background: rgba(20, 10, 40, 0.8);
+            border: 2px solid #ff00cc;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 0 20px rgba(255, 0, 204, 0.2);
+            cursor: pointer;
+        }
+
+        .game-skill-card:hover { 
+            transform: scale(1.05) translateY(-10px); 
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.7), 0 0 60px rgba(0, 255, 65, 0.4);
+            border-color: #00ff41;
+        }
+        
+        .game-skill-card .icon-container {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            background-color: rgba(255, 0, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #ff00cc;
+            transition: all 0.3s ease;
+        }
+
+        .game-skill-card:hover .icon-container {
+            background-color: rgba(0, 255, 65, 0.2);
+            border-color: #00ff41;
+        }
+
+        .game-skill-card .icon-container img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: brightness(0) invert(1); 
+        }
+
+        .game-skill-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .game-skill-card p {
+            font-size: 0.85rem;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .achievements-section {
+            margin-top: 80px;
+            padding-top: 50px;
+            border-top: 1px dashed rgba(255, 0, 204, 0.5);
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-item {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #00ff41;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.3s;
+        }
+
+        .achievement-item:hover {
+            background: rgba(0, 255, 65, 0.1);
+            transform: scale(1.05);
+        }
+
+        .achievement-item i {
+            font-size: 1.5rem;
+            color: #00ff41;
+        }
+
+        .achievement-item h4 { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: #00ff41; }
+        .achievement-item p { font-size: 0.7rem; color: #aaa; }
+
     </style>
 </head>
-<body>
-    <h1>¡Hola! Soy PassionAndCode</h1>
-    <p>Bienvenido a mi portafolio en construcción.</p>
+<body class="theme-programming">
+
+    <canvas id="gaming-canvas"></canvas>
+
+    <div class="fixed-logo">PASSIONANDDEV</div>
+
+    <section class="section-programming" id="prog-trigger">
+        <div class="content-box">
+            <span style="color: #2563eb; font-weight: bold; letter-spacing: 2px;">SYSTEM.INIT()</span>
+            <h2>Software Architect</h2>
+            <p>I design <strong>scalable digital ecosystems</strong>. From low-level C logic to high-level cloud architectures.</p>
+            
+            <div class="skills-grid">
+                <div class="skill-item"><span class="expert-badge">ADVANCED</span><i class="devicon-java-plain"></i><span>Java</span></div>
+                <div class="skill-item"><i class="devicon-python-plain"></i><span>Python</span></div>
+                <div class="skill-item"><i class="devicon-javascript-plain"></i><span>JavaScript</span></div>
+                <div class="skill-item"><i class="devicon-nodejs-plain"></i><span>Node.js</span></div>
+                <div class="skill-item"><i class="devicon-postgresql-plain"></i><span>SQL</span></div>
+                <div class="skill-item"><i class="devicon-c-plain"></i><span>C Language</span></div>
+                <div class="skill-item"><i class="devicon-html5-plain"></i><span>HTML5</span></div>
+                <div class="skill-item"><i class="devicon-css3-plain"></i><span>CSS3</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="security-trigger">
+        <div class="content-box">
+            <h2 class="glitch-text" data-text="<CYBER_OPS/>">&lt;CYBER_OPS/&gt;</h2>
+            <p style="color: #ccc; font-family: 'Fira Code', monospace;">
+                System status: <span style="color: #00ff41;">COMPROMISED</span><br>
+                Executing defense protocols...
+            </p>
+
+            <div class="hacker-grid">
+                <div class="hacker-item"><h3>>_ BASH.sh</h3><p>Automating tasks via shell scripting.</p></div>
+                <div class="hacker-item"><h3>/ROOT/ACCESS</h3><p>Kali Linux & Debian environments.</p></div>
+                <div class="hacker-item"><h3>[LOCK] CRYPTO</h3><p>Encryption protocols & data obfuscation.</p></div>
+                <div class="hacker-item"><h3>C:\WIN_CMD</h3><p>Windows internal manipulation.</p></div>
+                <div class="hacker-item" style="border-style: dashed;">
+                    <h3>PENDING_SCAN<span class="cursor-blink">_</span></h3>
+                    <p>Learning: Reverse Engineering...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gaming-trigger">
+      <div class="content-box">
+            <h2 class="glitch-text" data-text="GAME DEV REALMS">GAME DEV REALMS</h2>
+            <p class="subtitle-gaming">Choose Your Path, Brave Adventurer!</p>
+            
+            <div class="game-skills-grid">
+                
+        <div class="game-skill-card">
+            <div class="icon-container">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unrealengine/unrealengine-original.svg" alt="UE5"> 
+            </div>
+            <h3>Unreal Engine 5</h3>
+            <p>Mastering UE5's visual power, Blueprints, and C++. Ready to build massive open worlds in the style of <strong>GTA</strong>.</p>
+        </div>
+
+        <div class="game-skill-card">
+            <div class="icon-container">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++">
+            </div>
+            <h3>C++ / GML</h3>
+            <p>Extreme performance optimization and full hardware control for complex mechanics like <strong>God of War</strong>.</p>
+        </div>
+
+        <div class="game-skill-card">
+            <div class="icon-container">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg" alt="Unity">
+            </div>
+            <h3>Unity & C#</h3>
+            <p>Versatile development for Mobile and PC, mastering Shaders and particles for a <strong>Resident Evil</strong> atmosphere.</p>
+        </div>
+
+        <div class="game-skill-card">
+            <div class="icon-container">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg" alt="Blender">
+            </div>
+            <h3>3D Modeling</h3>
+            <p>World architecture and asset creation. From <strong>Zelda</strong> dungeons to vibrant <strong>Cyberpunk</strong> cities.</p>
+        </div>
+            </div>
+
+            <div class="achievements-section">
+                <h3 style="margin-bottom: 25px;">Achievements Unlocked!</h3>
+                <div class="achievement-grid">
+                    <div class="achievement-item">
+                        <i class="devicon-godot-plain"></i>
+                        <div class="text-content">
+                            <h4>"First Blood"</h4>
+                            <p>Completed 3+ game jams.</p>
+                        </div>
+                    </div>
+                    <div class="achievement-item">
+                        <i class="devicon-linux-plain"></i>
+                        <div class="text-content">
+                            <h4>"Bug Hunter"</h4>
+                            <p>Squashed 1000+ Metroid bugs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const progSection = document.getElementById('prog-trigger');
+            const securitySection = document.getElementById('security-trigger');
+            const gamingSection = document.getElementById('gaming-trigger');
+            
+            const scrollPos = window.scrollY + (window.innerHeight / 3);
+            const body = document.body;
+
+            if (scrollPos >= gamingSection.offsetTop) {
+                body.className = 'theme-gaming';
+            } else if (scrollPos >= securitySection.offsetTop) {
+                body.className = 'theme-security';
+            } else {
+                body.className = 'theme-programming';
+            }
+        });
+
+        const canvas = document.getElementById('gaming-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#ff00cc' : '#00ff41';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (document.body.classList.contains('theme-gaming')) {
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
